@@ -4,11 +4,15 @@ const mongoose = require('mongoose');
 const app = express();
 const userRoutes = require('./routes/user.route')
 const ticketRoutes = require('./routes/ticket.route');
+const AuthRoutes = require('./routes/auth.routes')
 
 app.use(express.json());
 //Setting Up Routes
 app.use('/users',userRoutes)
 app.use('/tickets', ticketRoutes);
+app.use('/auth',AuthRoutes)
+
+
 // MongoDB Connection with Mongoose
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log("Connected to database");
