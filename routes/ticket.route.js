@@ -4,6 +4,7 @@ const {
     getAllTickets,
     getTicketById,
     getTicketByName,
+    updateTicketStatus,
     updateTicket,
     deleteTicket
 } = require('../controllers/ticketController');
@@ -16,6 +17,7 @@ router.get('/all', getAllTickets);
 router.get('/:id', getTicketById);
 router.get('/name/:name', getTicketByName);
 router.put('/:id', updateTicket);
+router.patch('/:id/status', updateTicketStatus);
 router.delete('/:id', deleteTicket);
 
 module.exports = router;
