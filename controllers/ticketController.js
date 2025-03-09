@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const Ticket = require('../models/Ticket');
 const User = require('../models/User'); 
+const mongoose = require("mongoose");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -216,6 +217,41 @@ const getTicketsByAgentId = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// 🎫 Dashboard route to count each enum of the ticket status
+const getTicketStatusCounts = async (req, res) => {
+    try {
+        const statusCounts = await Ticket.aggregate([
+            { 
+                $group: { 
+                    _id: "$status", 
+                    count: { $sum: 1 } 
+                } 
+            }
+        ]);
+
+        // Formatting response for better readability
+        const formattedCounts = {
+            open: 0,
+            inProgress: 0,
+            closed: 0
+        };
+
+        statusCounts.forEach(item => {
+            if (item._id === 0) formattedCounts.open = item.count;
+            if (item._id === 1) formattedCounts.inProgress = item.count;
+            if (item._id === 2) formattedCounts.closed = item.count;
+        });
+
+        res.json({ statusCounts: formattedCounts });
+    } catch (error) {
+        res.status(500).json({ message: "Error counting tickets", error });
+    }
+};
+
+
+
+
 // Export all functions
 module.exports = {
     createTicket,
@@ -227,5 +263,7 @@ module.exports = {
     deleteTicket,
     filterByStatus,
     getTicketsByUserId,
-    getTicketsByAgentId
+    getTicketsByAgentId,
+    getTicketStatusCounts,
+
 };
