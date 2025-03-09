@@ -9,7 +9,10 @@ const {
     deleteTicket,
     filterByStatus,
     getTicketsByAgentId,
-    getTicketsByUserId
+    getTicketsByUserId,
+    getTicketStatusCounts,
+    countticketsforagent,
+    countticketsforuser
 } = require('../controllers/ticketController');
 
 const router = express.Router();
@@ -25,6 +28,8 @@ router.patch('/:id/status', updateTicketStatus);
 router.delete('/:id', deleteTicket);
 router.get('/agent/:userId', getTicketsByAgentId);
 router.get('/user/:userId', getTicketsByUserId);
-
+router.get('/dashboard/all', getTicketStatusCounts);
+router.get('/dashboard/agent/:userId', countticketsforagent);
+router.get('/dashboard/user/:userId', countticketsforuser);
 
 module.exports = router;
