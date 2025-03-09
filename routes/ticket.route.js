@@ -203,7 +203,7 @@ const getTicketsByUserId = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-// Get all tickets assigned to a specific agent
+// Get all tickets assigned to a specific AGENT
 const getTicketsByAgentId = async (req, res) => {
     try {
         const { userId } = req.params;
