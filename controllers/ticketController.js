@@ -165,6 +165,57 @@ const sendStatusUpdateEmail = (toEmail, ticketName , previousStatus, newStatus) 
         }
     });
 };
+
+// Filter tickets by status
+const filterByStatus = async (req, res) => {
+    try {
+        console.log("Received Params:", req.params);  // Debugging step
+
+        let { status } = req.params; // Get status from route params
+
+        if (!status) return res.status(400).json({ message: "Status is required" });
+
+        status = Number(status); // Convert to number
+        if (isNaN(status)) return res.status(400).json({ message: "Invalid status value" });
+
+        const tickets = await Ticket.find({ status });
+
+        if (tickets.length === 0) return res.status(404).json({ message: "No tickets found" });
+
+        res.status(200).json(tickets);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Get all tickets for a specific user
+const getTicketsByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const tickets = await Ticket.find({ createdBy: userId });
+
+        if (tickets.length === 0) return res.status(404).json({ message: "No tickets found for this user" });
+
+        res.status(200).json(tickets);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+// Get all tickets assigned to a specific agent
+const getTicketsByAgentId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const tickets = await Ticket.find({ assignedTo: userId });
+
+        if (tickets.length === 0) return res.status(404).json({ message: "No tickets found for this agent" });
+
+        res.status(200).json(tickets);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 // Export all functions
 module.exports = {
     createTicket,
@@ -173,5 +224,8 @@ module.exports = {
     getTicketByName,
     updateTicket,
     updateTicketStatus,
-    deleteTicket
+    deleteTicket,
+    filterByStatus,
+    getTicketsByUserId,
+    getTicketsByAgentId
 };
