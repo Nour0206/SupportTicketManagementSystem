@@ -6,10 +6,10 @@ const router =express.Router()
 
 router.post('/register',async(req,res)=>{
     try {
-        const {name,email,password}=req.body;
-        const user = new User({name,email,password})
+        const {name,email,password,role}=req.body;
+        const user = new User({name,email,password,role})
         await user.save()
-        res.status(201).send({message:"user saved successfully",user})
+        res.status(201).send({message:"user saved successfully",userId:user._id,role:user.role})
     } catch (error) {
         res.status(500).send({message:error.message})
     }
@@ -28,7 +28,7 @@ router.post('/login',async(req,res)=>{
 
     }
     const token = await jwt.sign({userId:user._id},process.env.SECRET_KEY)
-    res.send({message:'user logged in successfully',token})
+    res.send({message:'user logged in successfully',token,userId:user._id,role:user.role})
    } catch (error) {
     res.status(400).send({message:error.message})
    }

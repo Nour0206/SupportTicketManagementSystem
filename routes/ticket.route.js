@@ -6,7 +6,7 @@ const {
     getTicketByName,
     updateTicketStatus,
     updateTicket,
-    deleteTicket
+    deleteTicket,
 } = require('../controllers/ticketController');
 
 const router = express.Router();
@@ -19,5 +19,4 @@ router.get('/name/:name', getTicketByName);
 router.put('/:id', updateTicket);
 router.patch('/:id/status', updateTicketStatus);
 router.delete('/:id', deleteTicket);
-
 module.exports = router;

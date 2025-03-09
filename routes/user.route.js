@@ -55,6 +55,19 @@ router.put('/:email',async(req,res)=>{
     res.status(500).send({message:error});
     }
  })
+//DeleteUserById
+router.delete('/id/:id', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            res.status(404).send({message: "user not found"});
+        }
+        await User.findByIdAndDelete(req.params.id);
+        res.send({message: "User deleted successfully"});
+    } catch (error) {
+        res.status(500).send({message: error});
+    }
+});
 //get user by name 
  router.get('/:name',async(req,res)=>{
     try {
