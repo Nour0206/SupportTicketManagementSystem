@@ -23,7 +23,8 @@ const TicketSchema = new Schema({
         default: 0,
         enum: [0, 1, 2],// 0 = Open, 1 = In Progress, 2 = Closed
     },
-    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null } // Assign to an agent
+    assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null } ,
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null }, 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Ticket', TicketSchema);
