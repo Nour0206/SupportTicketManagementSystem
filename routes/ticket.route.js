@@ -10,7 +10,13 @@ const {
     filterByStatus,
     getTicketsByAgentId,
     getTicketsByUserId,
+<<<<<<< HEAD
     assignTicket
+=======
+    getTicketStatusCounts,
+    countticketsforagent,
+    countticketsforuser
+>>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 } = require('../controllers/ticketController');
 
 const router = express.Router();
@@ -27,6 +33,8 @@ router.put('/:id/assign', assignTicket);
 router.delete('/:id', deleteTicket);
 router.get('/agent/:userId', getTicketsByAgentId);
 router.get('/user/:userId', getTicketsByUserId);
-
+router.get('/dashboard/all', getTicketStatusCounts);
+router.get('/dashboard/agent/:userId', countticketsforagent);
+router.get('/dashboard/user/:userId', countticketsforuser);
 
 module.exports = router;

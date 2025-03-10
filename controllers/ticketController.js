@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const Ticket = require('../models/Ticket');
 const User = require('../models/User'); 
+const mongoose = require("mongoose");
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -217,6 +218,7 @@ const getTicketsByAgentId = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
 const assignTicket = async (req, res) => {
     try {
         const { id } = req.params;
@@ -238,6 +240,115 @@ const assignTicket = async (req, res) => {
     }
 };
 
+=======
+// 🎫 Dashboard route to count each enum of the ticket status
+const getTicketStatusCounts = async (req, res) => {
+    try {
+        const statusCounts = await Ticket.aggregate([
+            { 
+                $group: { 
+                    _id: "$status", 
+                    count: { $sum: 1 } 
+                } 
+            }
+        ]);
+
+        // Formatting response for better readability
+        const formattedCounts = {
+            open: 0,
+            inProgress: 0,
+            closed: 0
+        };
+
+        statusCounts.forEach(item => {
+            if (item._id === 0) formattedCounts.open = item.count;
+            if (item._id === 1) formattedCounts.inProgress = item.count;
+            if (item._id === 2) formattedCounts.closed = item.count;
+        });
+
+        res.json({ statusCounts: formattedCounts });
+    } catch (error) {
+        res.status(500).json({ message: "Error counting tickets", error });
+    }
+};
+
+const countticketsforagent = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Convert userId properly to ObjectId
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+
+        const statusCounts = await Ticket.aggregate([
+            {
+                $match: {
+                    assignedTo: userObjectId, // Ensure ObjectId format
+                    status: { $in: [1, 2] } // In Progress & Closed
+                }
+            },
+            {
+                $group: {
+                    _id: "$status",
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Format response
+        const formattedCounts = { inProgress: 0, closed: 0 };
+        statusCounts.forEach(({ _id, count }) => {
+            if (_id === 1) formattedCounts.inProgress = count;
+            if (_id === 2) formattedCounts.closed = count;
+        });
+
+        res.json({ assignedTo: userId, statusCounts: formattedCounts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error counting tickets", error });
+    }
+};
+
+const countticketsforuser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Convert userId properly to ObjectId
+        const userObjectId = new mongoose.Types.ObjectId(userId);
+
+        const statusCounts = await Ticket.aggregate([
+            {
+                $match: {
+                    createdBy: userObjectId, // Ensure ObjectId format
+                    status: { $in: [1, 2] } // In Progress & Closed
+                }
+            },
+            {
+                $group: {
+                    _id: "$status",
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        // Format response
+        const formattedCounts = { inProgress: 0, closed: 0 };
+        statusCounts.forEach(({ _id, count }) => {
+            if (_id === 1) formattedCounts.inProgress = count;
+            if (_id === 2) formattedCounts.closed = count;
+        });
+
+        res.json({ createdBy: userId, statusCounts: formattedCounts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error counting tickets", error });
+    }
+};
+
+
+
+
+
+>>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 // Export all functions
 module.exports = {
     createTicket,
@@ -250,5 +361,11 @@ module.exports = {
     filterByStatus,
     getTicketsByUserId,
     getTicketsByAgentId,
+<<<<<<< HEAD
     assignTicket
+=======
+    getTicketStatusCounts,
+    countticketsforagent,
+    countticketsforuser
+>>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 };
