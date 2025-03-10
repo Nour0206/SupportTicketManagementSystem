@@ -218,7 +218,6 @@ const getTicketsByAgentId = async (req, res) => {
     }
 };
 
-<<<<<<< HEAD
 const assignTicket = async (req, res) => {
     try {
         const { id } = req.params;
@@ -240,7 +239,7 @@ const assignTicket = async (req, res) => {
     }
 };
 
-=======
+
 // 🎫 Dashboard route to count each enum of the ticket status
 const getTicketStatusCounts = async (req, res) => {
     try {
@@ -348,7 +347,6 @@ const countticketsforuser = async (req, res) => {
 
 
 
->>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 // Export all functions
 module.exports = {
     createTicket,
@@ -361,11 +359,8 @@ module.exports = {
     filterByStatus,
     getTicketsByUserId,
     getTicketsByAgentId,
-<<<<<<< HEAD
-    assignTicket
-=======
+    assignTicket,
     getTicketStatusCounts,
     countticketsforagent,
     countticketsforuser
->>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 };

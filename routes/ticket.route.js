@@ -10,13 +10,10 @@ const {
     filterByStatus,
     getTicketsByAgentId,
     getTicketsByUserId,
-<<<<<<< HEAD
-    assignTicket
-=======
+    assignTicket,
     getTicketStatusCounts,
     countticketsforagent,
     countticketsforuser
->>>>>>> 1cef3eeac27151272402243f12b9774ff3266ed0
 } = require('../controllers/ticketController');
 
 const router = express.Router();

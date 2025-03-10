@@ -138,7 +138,7 @@ router.post('/resetPassword',async(req,res)=>{
             from: '"Support Team"<no-reply@Support.com>',
             to: email,
             subject: 'Reset Password',
-            text: `<h2>Hello ${user.name},</h2> 
+            html: `<h2>Hello ${user.name},</h2> 
             <p>Click on this <a href=http://localhost:3000/reset-password/${token}>link</a> to reset your password</p> `
         };
         await transporter.sendMail(mailOptions)
