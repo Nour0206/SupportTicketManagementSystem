@@ -13,12 +13,11 @@ Ticket Management System
 
 - Login / Register / Logout   (Authentication)
 - Admin Page / User Page
-- Add / Update Tickets
-- TicketName Filter Tickets
+- Add / Update Tickets status / AssignTo an agent
+- TicketStatus Filter Tickets
 - Dynamic Search 
 - Add Ticket Message (Admin / User)
 - Home / Profile / Tickets / AddTickets / Logout / Login / Register Page
-- Add İmage File Tickets
 
 
 ## Running
