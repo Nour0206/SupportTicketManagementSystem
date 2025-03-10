@@ -97,7 +97,7 @@ const updateTicket = async (req, res) => {
 const updateTicketStatus = async (req, res) => {
     try {
         const { status } = req.body;
-
+        console.log("Status:", status); // Debugging step
         // Validate status value
         if (![0, 1, 2].includes(status)) {
             return res.status(400).json({ message: "Invalid status value" });
@@ -216,6 +216,28 @@ const getTicketsByAgentId = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+const assignTicket = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { assignedTo } = req.body;
+
+        const ticket = await Ticket.findByIdAndUpdate(
+            id,
+            { assignedTo },
+            { new: true }
+        );
+
+        if (!ticket) {
+            return res.status(404).send({ message: 'Ticket not found' });
+        }
+
+        res.status(200).send(ticket);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+};
+
 // Export all functions
 module.exports = {
     createTicket,
@@ -227,5 +249,6 @@ module.exports = {
     deleteTicket,
     filterByStatus,
     getTicketsByUserId,
-    getTicketsByAgentId
+    getTicketsByAgentId,
+    assignTicket
 };

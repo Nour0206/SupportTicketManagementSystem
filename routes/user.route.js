@@ -60,7 +60,7 @@ router.delete('/id/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
-            res.status(404).send({message: "user not found"});
+            return res.status(404).send({message: "user not found"});
         }
         await User.findByIdAndDelete(req.params.id);
         res.send({message: "User deleted successfully"});
@@ -82,7 +82,29 @@ router.delete('/id/:id', async (req, res) => {
     }
  })
 
- 
- 
+// Get users by role
+router.get('/role/:role', async (req, res) => {
+    try {
+        const users = await User.find({ role: req.params.role });
+        if (users.length === 0) {
+            return res.status(404).send({ message: "No users found with this role" });
+        }
+        res.status(200).send(users);
+    } catch (error) {
+        res.status(500).send({ message: error.message });
+    }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+    res.json({ message: 'User deleted successfully' })
+  } catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+})
 
 module.exports = router
